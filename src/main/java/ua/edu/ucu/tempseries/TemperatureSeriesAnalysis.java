@@ -14,13 +14,13 @@ public class TemperatureSeriesAnalysis {
     }
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
-        // While creating variable don't assign temperatureSeries, use Array.copy
         this.capacity = temperatureSeries.length;
         this.n = this.capacity;
         this.temperatureSeries = new double[temperatureSeries.length];
+        final int constant = -273;
 
         for (int i = 0; i < capacity; i++) {
-            if (temperatureSeries[i] < -273) {
+            if (temperatureSeries[i] < constant) {
                 throw new InputMismatchException();
             } else {
                 this.temperatureSeries[i] = temperatureSeries[i];
@@ -34,8 +34,9 @@ public class TemperatureSeriesAnalysis {
         }
 
         double sum = this.getSum();
+        final double constant = 100.0;
 
-        return  Math.round((sum / capacity) * 100.0) / 100.0;
+        return  Math.round((sum / capacity) * constant) / constant;
     }
 
     public double deviation() {
@@ -45,12 +46,13 @@ public class TemperatureSeriesAnalysis {
 
         double mean = this.average();
         double squareError = 0;
+        final double constant = 100.0;
 
         for (double temp : temperatureSeries) {
-            squareError += Math.pow((temp - mean), 2);
+            squareError += (temp - mean) * (temp - mean);
         }
 
-        return Math.round((Math.sqrt(squareError / n)) * 100.0) / 100.0;
+        return Math.round((Math.sqrt(squareError / n)) * constant) / constant;
     }
 
     public double min() {
@@ -109,11 +111,13 @@ public class TemperatureSeriesAnalysis {
         }
 
         double closest = Double.POSITIVE_INFINITY;
+        double distance;
 
         for (double temp : temperatureSeries) {
-            if (Math.abs(temp - tempValue) < Math.abs(closest - tempValue)) {
+            distance = Math.abs(closest - tempValue);
+            if (Math.abs(temp - tempValue) < distance) {
                 closest = temp;
-            } else if (Math.abs(temp - tempValue) == Math.abs(closest - tempValue)) {
+            } else if (Math.abs(temp - tempValue) == distance) {
                 closest = Math.max(temp, closest);
             }
         }
@@ -178,7 +182,10 @@ public class TemperatureSeriesAnalysis {
             throw new IllegalArgumentException();
         }
 
-        return new TempSummaryStatistics(this.average(), this.deviation(), this.min(), this.max());
+        return new TempSummaryStatistics(this.average(),
+                                         this.deviation(),
+                                         this.min(),
+                                         this.max());
     }
 
     public int addTemps(double... temps) {
