@@ -17,10 +17,10 @@ public class TemperatureSeriesAnalysis {
         this.capacity = temperatureSeries.length;
         this.n = this.capacity;
         this.temperatureSeries = new double[temperatureSeries.length];
-        final int constant = -273;
+        final int CONSTANT = -273;
 
         for (int i = 0; i < capacity; i++) {
-            if (temperatureSeries[i] < constant) {
+            if (temperatureSeries[i] < CONSTANT) {
                 throw new InputMismatchException();
             } else {
                 this.temperatureSeries[i] = temperatureSeries[i];
@@ -34,9 +34,9 @@ public class TemperatureSeriesAnalysis {
         }
 
         double sum = this.getSum();
-        final double constant = 100.0;
+        final double CONSTANT = 100.0;
 
-        return  Math.round((sum / capacity) * constant) / constant;
+        return  Math.round((sum / capacity) * CONSTANT) / CONSTANT;
     }
 
     public double deviation() {
@@ -46,13 +46,13 @@ public class TemperatureSeriesAnalysis {
 
         double mean = this.average();
         double squareError = 0;
-        final double constant = 100.0;
+        final double CONSTANT = 100.0;
 
         for (double temp : temperatureSeries) {
             squareError += (temp - mean) * (temp - mean);
         }
 
-        return Math.round((Math.sqrt(squareError / n)) * constant) / constant;
+        return Math.round((Math.sqrt(squareError / n)) * CONSTANT) / CONSTANT;
     }
 
     public double min() {
